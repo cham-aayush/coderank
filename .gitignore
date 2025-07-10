@@ -1,0 +1,6 @@
+node_modules/
+.env
+.DS_Store
+coderank-frontend/node_modules
+coderank-backend/venv
+__pycache__/
