@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -10,29 +10,11 @@ import {
   Legend,
 } from "chart.js";
 import Recommendations from "./components/Recommendations.js";
+import "@fontsource/orbitron";
+import "@fontsource/press-start-2p";
 
 ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend);
-function DarkModeToggle() {
-  const [dark, setDark] = useState(false);
 
-  useEffect(() => {
-    const root = window.document.documentElement;
-    if (dark) {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-  }, [dark]);
-
-  return (
-    <button
-      onClick={() => setDark(!dark)}
-      className="absolute top-4 right-4 px-4 py-1 rounded-md border dark:border-gray-200 border-gray-800 bg-white dark:bg-black text-black dark:text-white"
-    >
-      {dark ? "☀️ Light" : "🌙 Dark"}
-    </button>
-  );
-}
 function App() {
   const [username, setUsername] = useState("");
   const [stats, setStats] = useState(null);
@@ -61,8 +43,8 @@ function App() {
           {
             label: "Streak Progress",
             data: data.streak.dates.map((_, i) => i + 1),
-            borderColor: "#10b981",
-            backgroundColor: "#d1fae5",
+            borderColor: "#0ff",
+            backgroundColor: "#112",
             tension: 0.4,
           },
         ],
@@ -75,9 +57,24 @@ function App() {
   };
 
   return (
-     
-    <div className="min-h-screen bg-gray-50 px-4 py-8 font-sans">
-      <h1 className="text-3xl font-bold text-center text-green-600 mb-6">LeetCode Stats & Streak</h1>
+    <div className="min-h-screen bg-[#0f0f1a] text-[#0ff] px-4 py-8 font-[Orbitron]">
+      <h1 className="text-4xl text-center font-bold glitch-text mb-6">⚡ CodeRank ⚡</h1>
+
+      <style>{`
+        .glitch-text {
+          position: relative;
+          color: #0ff;
+          animation: glitch 1s infinite;
+        }
+
+        @keyframes glitch {
+          0% { text-shadow: 2px 2px #f0f, -2px -2px #0ff; }
+          20% { text-shadow: -2px -2px #0f0, 2px 2px #f0f; }
+          40% { text-shadow: 2px -2px #f00, -2px 2px #0ff; }
+          60% { text-shadow: -2px 2px #ff0, 2px -2px #00f; }
+          100% { text-shadow: 2px 2px #0ff, -2px -2px #f0f; }
+        }
+      `}</style>
 
       <div className="flex flex-col items-center gap-4 mb-6 sm:flex-row sm:justify-center">
         <input
@@ -85,23 +82,23 @@ function App() {
           placeholder="Enter LeetCode username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="border border-gray-300 rounded px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="bg-[#111] border border-[#0ff] text-[#0ff] placeholder-[#0ff] rounded px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-[#f0f]"
         />
         <button
           onClick={handleFetch}
-          className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded"
+          className="bg-[#0ff] text-[#111] hover:bg-[#f0f] px-5 py-2 rounded font-bold"
         >
           Check
         </button>
       </div>
 
-      {error && <p className="text-red-600 text-center">{error}</p>}
-      {loading && <p className="text-center text-green-600 font-semibold">Loading...</p>}
+      {error && <p className="text-red-400 text-center font-mono">{error}</p>}
+      {loading && <p className="text-center text-[#0ff] font-semibold">Loading...</p>}
 
       {stats && (
-        <div className="bg-white rounded shadow p-6 max-w-xl mx-auto mb-6">
-          <h2 className="text-xl font-semibold mb-4">User Stats</h2>
-          <ul className="space-y-1 text-gray-700">
+        <div className="bg-[#111] border border-[#0ff] text-[#0ff] rounded p-6 max-w-xl mx-auto mb-6">
+          <h2 className="text-xl font-bold mb-4">🚀 User Stats</h2>
+          <ul className="space-y-1">
             <li><strong>Total Solved:</strong> {stats.totalSolved}</li>
             <li><strong>Easy:</strong> {stats.easySolved}</li>
             <li><strong>Medium:</strong> {stats.mediumSolved}</li>
@@ -113,7 +110,7 @@ function App() {
       )}
 
       {chartData && (
-        <div className="bg-white rounded shadow p-6 max-w-2xl mx-auto">
+        <div className="bg-[#111] border border-[#0ff] rounded p-6 max-w-2xl mx-auto">
           <Line data={chartData} />
         </div>
       )}
